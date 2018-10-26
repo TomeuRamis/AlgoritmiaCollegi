@@ -14,13 +14,15 @@ public class Llista_estudiant_assignatura {
 
     public ReferenciaAssignatura cercarRefassign(int codi) {
         ReferenciaAssignatura assign = cap;
-        while ((assign.getSeg() != null) && (assign.getRef().getCodi() != codi)) {
-            assign = assign.getSeg();
-        }
-        if (assign.getRef().getCodi() == codi) {
-            System.out.print(assign.getRef().getNom() + "\n");
-        } else {
-            System.out.println("no s'ha trobat element");
+        if (cap != null) {
+            while ((assign.getSeg() != null) && (assign.getRef().getCodi() != codi)) {
+                assign = assign.getSeg();
+            }
+            if (assign.getRef().getCodi() == codi) {
+                System.out.print(assign.getRef().getNom() + "\n");
+            } else {
+                System.out.println("no s'ha trobat element");
+            }
         }
         return assign;
     }
@@ -49,7 +51,7 @@ public class Llista_estudiant_assignatura {
         String res = "";
         ReferenciaAssignatura refAssAux = this.cap;
         while (refAssAux != null) {
-            res += refAssAux.getRef().toString()+"\n";
+            res += refAssAux.getRef().toString() + "\n";
             refAssAux = refAssAux.getSeg();
         }
         return res;

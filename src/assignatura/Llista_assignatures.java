@@ -75,8 +75,8 @@ public class Llista_assignatures implements AccesLlista {
 
             while (!trobat && aux.getSeg() != null) {
                 if (aux.getSeg().getCodi() == codi) {
-                    aux.eliminarLlista_assig_est();
-                    aux.eliminarEstudiants();
+                    aux.getSeg().eliminarLlista_assig_est();
+                    aux.getSeg().eliminarEstudiants();
                     aux.setSeg(aux.getSeg().getSeg());
                     trobat = true;
                     System.out.println("Eliminat correctement");
