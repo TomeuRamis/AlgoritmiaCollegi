@@ -12,6 +12,5 @@ public interface AccesLlista{
     public Object cercar(int codi); 
 
     public void eliminar(int codi);
-    
-    //pikachu is da best
+
 }

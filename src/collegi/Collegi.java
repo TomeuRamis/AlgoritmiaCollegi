@@ -20,6 +20,7 @@ public class Collegi {
 
     Llista_estudiants_collegi llistEst = new Llista_estudiants_collegi();
     Llista_curs llistCurs = new Llista_curs();
+    boolean Onofre = false;
 
     public void menu() {
         boolean sortir = false;
@@ -68,7 +69,7 @@ public class Collegi {
 
     public void donarAltaCurs() {
         Curs curs = null;
-        Assignatura assignatura = null;
+        Assignatura assignatura;
         //int nCursos = llegirNum("\nNombre de cursos a inserir: ");
         //for (int i = 0; i < nCursos; i++) {
         //System.out.println("\n-----------curs " + (i + 1) + "----------------");
