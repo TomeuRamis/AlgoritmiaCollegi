@@ -20,7 +20,7 @@ public class Collegi {
 
     Llista_estudiants_collegi llistEst = new Llista_estudiants_collegi();
     Llista_curs llistCurs = new Llista_curs();
-    boolean Onofre = false;
+    boolean Onofre_Lluis = false;
 
     public void menu() {
         boolean sortir = false;
