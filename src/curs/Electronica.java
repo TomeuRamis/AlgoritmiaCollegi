@@ -6,7 +6,7 @@ import assignatura.Assignatura;
  */
 public class Electronica extends FormacioProfessional{
     
-    protected static final String especialitat = "ELECTRÒNICA";
+    protected static final String ESPECIALITAT = "ELECTRÒNICA";
     
     public Electronica(int n_ass, String nom, int codi){
         super(n_ass, nom, codi);
@@ -14,7 +14,7 @@ public class Electronica extends FormacioProfessional{
     
     @Override
     public String toString(){
-        return"FP = especialitat: "+especialitat+" nom: "+nom+" / codi:"+codi;
-    }
+return"Curs = { nom: "+nom+" | codi:"+codi+" | tipus: FP |"
+                + " especialitat: "+ ESPECIALITAT +"}";    }
     
 }

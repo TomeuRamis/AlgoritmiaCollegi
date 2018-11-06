@@ -16,93 +16,97 @@ public class Llista_assignatures implements AccesLlista {
     /*
     Atributs privats
      */
-    protected Assignatura cap = null;
 
-    /*
-    Implementació de mètodes de la interfície
-     */
-    public void inserirAssignatura(Assignatura ass) {
+    protected Assignatura[] llista_ass;
+    protected int n_ass;
 
-        if (cap == null) {
-            cap = ass;
-        } else {
-            if (cap.getCodi() > ass.getCodi()) {
-                ass.setSeg(cap);
-                cap = ass;
-            } else {
-                Assignatura aux1 = cap.getSeg();
-                Assignatura aux2 = cap;
-                if (aux1 != null) {
-                    while (aux1.getCodi() < ass.getCodi() && aux1.getSeg() != null) {
-                        aux2 = aux1;
-                        aux1 = aux1.getSeg();
-                    }
-                    ass.setSeg(aux1);
-                    aux2.setSeg(ass);
-                } else {
-                    ass.setSeg(aux1);
-                    aux2.setSeg(ass);
+    public Llista_assignatures(int n) {
+        llista_ass = new Assignatura[n];
+        this.n_ass = n;
+    }
+
+    public void inserirAssignatura(Assignatura ass, int i) {
+        llista_ass[i] = ass;
+    }
+
+    public void ordenar() {
+        final int N = llista_ass.length;
+        Assignatura aux;
+        for (int i = 0; i < N - 1; i++) {
+            for (int j = N - 2; j >= i; j--) {
+                if (llista_ass[j].getCodi() < llista_ass[j + 1].getCodi()) {
+                    aux = llista_ass[j + 1];
+                    llista_ass[j + 1] = llista_ass[j];
+                    llista_ass[j] = aux;
                 }
             }
         }
-    }
-
-    public Object cercar(int codi) {
-        Assignatura aux = cap;
-        boolean trobat = false;
-
-        while (!trobat && cap != null) {
-            if (codi == aux.getCodi()) {
-                trobat = true;
-            } else {
-                aux = aux.getSeg();
-            }
-        }
-        return aux;
     }
 
     @Override
-    public void eliminar(int codi) {
-        if (cap.getCodi() == codi) {
-            cap.eliminarLlista_assig_est();
-            cap.eliminarEstudiants();
-            cap = cap.getSeg();
-            System.out.println("Eliminat correctement");
-//            NO S'UTILITZA MAI. SEMPRE ELIMINAM LA CAPÇALERA
-        } else {
-            Assignatura aux = cap;
-            boolean trobat = false;
-
-            while (!trobat && aux.getSeg() != null) {
-                if (aux.getSeg().getCodi() == codi) {
-                    aux.getSeg().eliminarLlista_assig_est();
-                    aux.getSeg().eliminarEstudiants();
-                    aux.setSeg(aux.getSeg().getSeg());
-                    trobat = true;
-                    System.out.println("Eliminat correctement");
-                } else {
-                    aux = aux.getSeg();
-                }
-            }
-        }
+    public Assignatura getCap() {
+        return llista_ass[0];
     }
 
     @Override
     public String mostrarLlista() {
-        Assignatura aux = cap;
         String res = "";
+        boolean fi = false;
 
-        while (aux != null) {
-            res += aux + "\n";
-            res += aux.mostrarEstudiants() + "\n";
-            aux = aux.getSeg();
+        for (int i = 0; i < n_ass && !fi; i++) {
+            if (llista_ass[i] == null) {
+                fi = true;
+            } else {
+                res += llista_ass[i] + "\n";
+                res += llista_ass[i].mostrarEstudiants() + "\n";
+            }
         }
 
         return res;
     }
 
-    public Assignatura getCap() {
-        return cap;
-    }
+    @Override
+    public Assignatura cercar(int codi) {
+        Assignatura aux = null;
+        int i = 0;
+        boolean trobat = false;
 
+        while (i < n_ass && !trobat) {
+            if (llista_ass[i].getCodi() == codi) {
+                aux = llista_ass[i];
+                trobat = true;
+            }else{
+                i++;
+            }
+        }
+        return aux;
+    }
+    /*
+    Crea un nou array en el que copiarà les assignatures que ja tenia el curs, menys
+    l'assignatura borrada. Després canviem la llista d'assignatures del curs per
+    la nova llista. (amb una assignatura menys)
+    */
+    @Override
+    public void eliminar(int codi) {
+        Assignatura[] aux = new Assignatura[n_ass];
+        int i = 0;
+        boolean trobat = false;
+
+        while (i < n_ass && !trobat) {
+            if (llista_ass[i].getCodi() != codi) {
+                aux[i] = llista_ass[i];
+                i++;
+            } else {
+                trobat = true;
+                llista_ass[i].eliminarLlista_assig_est();
+                llista_ass[i].eliminarEstudiants();
+                for (int j = i; j < (n_ass - 1); j++) {
+                    aux[j] = llista_ass[j + 1];
+                }
+            }
+        }
+
+        llista_ass = aux;
+
+    }
 }

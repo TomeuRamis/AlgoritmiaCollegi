@@ -4,74 +4,74 @@ public class Llista_estudiants_collegi {
 
     protected Estudiant cap = null;
 
-    public void inserirEstudiant(String nom, String dni) {
-        Estudiant estu = new Estudiant(nom, dni);
-        if (cap != null) {
-            if (compararAlfabeticament(estu.getNom(), cap.getNom())) {
+    /*
+    NO importa inserir els estudiant de forma ordenada en aquesta llista. Però 
+    d'aquesta forma podem fer que algunes cerques que es realitzin dins aquesta llista
+    siguin mès rapides que si la llista està desordenada.
+     */
+    public void inserirEstudiant(Estudiant estu) {
+
+        if (cap == null) {
+            estu.setSeg(cap);
+            cap = estu;
+        } else {
+            if (primer(cap, estu) == estu) {
                 estu.setSeg(cap);
                 cap = estu;
             } else {
-                Estudiant aux1 = cap.getSeg();
-                Estudiant aux2 = cap;
-                if (aux1 != null) {
-                    boolean trobat = false;
-                    while (!trobat && aux1 != null) {
-                        if (compararAlfabeticament(aux1.getNom(), estu.getNom())) {
-                            aux2 = aux1;
-                            aux1 = aux1.getSeg();
-                        } else {
-                            trobat = true;
-                        }
+                Estudiant aux = cap.getSeg();
+                Estudiant aux1 = cap;
+                boolean trobat = false;
+
+                while (aux != null && !trobat) {
+                    if (primer(aux, estu) == estu) {
+                        estu.setSeg(aux);
+                        aux1.setSeg(estu);
+                        trobat = true;
+                    } else {
+                        aux1 = aux;
+                        aux = aux.getSeg();
                     }
-                    estu.setSeg(aux1);
-                    aux2.setSeg(estu);
-                } else {
-                    aux2.setSeg(estu);
+                }
+                if (aux == null) {
+                    estu.setSeg(aux);
+                    aux1.setSeg(estu);
                 }
             }
-        } else {
-            cap = estu;
-
         }
     }
 
-    public Estudiant cercarEstudiant(String nom) {
+    public Estudiant cercarEstudiant(String dni) {
         Estudiant estudiant = cap;
         boolean trobat = false;
         if (cap != null) {
             while (estudiant != null && !trobat) {
-                if (estudiant.getNom().equals(nom)) {
-                    System.out.println("estudiant trobat");
+                if (estudiant.getDni().equals(dni)) {
                     trobat = true;
                 } else {
                     estudiant = estudiant.getSeg();
                 }
             }
-//            if (estudiant.getNom().equals(nom)) {
-//                System.out.print(estudiant.getNom() + "\n");
-//            } else {
-//                System.out.println("no s'ha trobat element");
-//            }
         }
 
         return estudiant;
     }
 
-    public void eliminarEstudiant(String nom) {
+    public void eliminarEstudiant(String dni) {
         Estudiant estu1 = cap;
         Estudiant estu2;
-        if (nom.equals(cap.getNom())) {
+        if (dni.equals(cap.getDni())) {
             cap = cap.getSeg();
         } else {
-            while ((estu1.getSeg() != null) && (estu1.getNom().equals(nom))) {
+            while ((estu1.getSeg() != null) && (estu1.getDni().equals(dni))) {
                 estu1 = estu1.getSeg();
             }
-            if (estu1.getNom().equals(nom)) {
+            if (estu1.getDni().equals(dni)) {
                 estu2 = estu1.getSeg();
                 estu1.Nodeseg(estu2.getSeg());
                 estu2.Nodeseg(null);
             } else {
-                System.out.println("no s'ha trobat element");
+                System.out.println("No s'ha trobat element");
             }
         }
 
@@ -81,25 +81,25 @@ public class Llista_estudiants_collegi {
     Compara alfabeticament dos strings. Si el primer aniria primer, retorna un
     true, si el segon va primer retorna un false
      */
-    public static boolean compararAlfabeticament(String nom1, String nom2) {
-        char[] n1 = nom1.toCharArray();
-        char[] n2 = nom2.toCharArray();
-        boolean diferents;
-        if (n1.length > n2.length) {
-            diferents = true;
+    private static Estudiant primer(Estudiant a, Estudiant b) {
+        Estudiant aux = a;
+        int n = 0;
+        boolean trobat = false;
+        if (a.getNom().charAt(n) == b.getNom().charAt(n)) {
+            while (n < a.getNom().length() && !trobat) {
+                if (a.getNom().charAt(n) > b.getNom().charAt(n)) {
+                    aux = b;
+                    trobat = true;
+                } else {
+                    n++;
+                }
+            }
         } else {
-            diferents = false;
-        }
-        for (int i = 0; i < n1.length && i < n2.length; i++) {
-            if (Character.getNumericValue(n1[i]) > Character.getNumericValue(n2[i])) {
-                diferents = true;
-                break;
-            } else if (Character.getNumericValue(n1[i]) < Character.getNumericValue(n2[i])) {
-                diferents = false;
-                break;
+            if (a.getNom().charAt(n) > b.getNom().charAt(n)) {
+                aux = b;
             }
         }
-        return diferents;
+        return aux;
     }
 
     public String mostrarLlista() {

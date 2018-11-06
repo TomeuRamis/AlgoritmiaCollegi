@@ -12,10 +12,13 @@ import estudiant.Estudiant;
  * @author tomeu
  */
 public class Assignatura {
+    
+    protected static final int MAX = 60;
 
     /*
     Atributs privats
      */
+    
     protected String nom;
     protected int codi;
     protected Llista_assignatura_estudiants listEst;
@@ -27,12 +30,12 @@ public class Assignatura {
     public Assignatura(String nom, int codi) {
         this.nom = nom;
         this.codi = codi;
-        this.listEst = new Llista_assignatura_estudiants();
+        this.listEst = new Llista_assignatura_estudiants(MAX);
         this.seg = null;
     }
 
     public void eliminarLlista_assig_est() {
-        ReferenciaEstudiant refEstAux = this.listEst.getCap();
+        ReferenciaEstudiant refEstAux = this.listEst.cap();
         while (refEstAux != null) {
             refEstAux.getRef().eliminarAssignatura(codi);
             refEstAux= refEstAux.getSeg();
@@ -40,21 +43,22 @@ public class Assignatura {
     }
 
     public void afegirEstudiant(Estudiant est) {
-        this.listEst.inserirEstudiant(est);
+        this.listEst.inserir(est);
     }
 
     public void eliminarEstudiants() {
-        this.listEst.eliminarEstudiants();
+        this.listEst.eliminar();
     }
 
     public String mostrarEstudiants() {
-        String res = "";
-        ReferenciaEstudiant refEstAux = this.listEst.getCap();
-        while(refEstAux != null){
-            res += refEstAux.getRef().toString()+"\n";
-            refEstAux = refEstAux.getSeg();
-        }
-        return res;    
+//        String res = "";
+//        ReferenciaEstudiant refEstAux = this.listEst.getCap();
+//        while(refEstAux != null){
+//            res += "\t"+refEstAux.getRef()+"\n";
+//            refEstAux = refEstAux.getSeg();
+//        }
+//        return res;   
+    return this.listEst.mostrar();
     }
 
     /*
@@ -72,10 +76,6 @@ public class Assignatura {
         this.listEst = listEst;
     }
 
-    public void setSeg(Assignatura seg) {
-        this.seg = seg;
-    }
-
     public String getNom() {
         return nom;
     }
@@ -88,8 +88,5 @@ public class Assignatura {
         return listEst;
     }
 
-    public Assignatura getSeg() {
-        return seg;
-    }
 
 }

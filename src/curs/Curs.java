@@ -2,6 +2,10 @@ package curs;
 
 import assignatura.Assignatura;
 import assignatura.Llista_assignatures;
+import assignatura.Obligatoria;
+import assignatura.Optativa;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -17,15 +21,13 @@ public class Curs {
 
     protected String nom;
     protected Llista_assignatures list;
-    protected int n_ass;
     protected int codi;
 
     public Curs(int n_ass, String nom, int codi) {
         if (n_ass <= MAX) {
-            this.n_ass = n_ass;
             this.nom = nom;
             this.codi = codi;
-            list = new Llista_assignatures();
+            list = new Llista_assignatures(n_ass);
         } else {
             /* ERROR, un curs tan sols pot tenir com a màxim 10 assignatures*/
         }
@@ -36,29 +38,43 @@ public class Curs {
     // En aquest cas s'haura de refer el constructor de curs.
     // public Llista_assignatures ll_a;
 
-    @Override
-    public String toString() {
-        return "CURS = {nom: " + nom + " | codi: " + codi+"}";
-    }
+    public void inserirAssignatura(int i) {
+        String[] possiblesAss = {"Obligatòria", "Optativa"};
+        String[] possiblesPerfils = {"Teòrica", "Pràctica"};
+        Assignatura assignatura;
+        int perf;
 
-    //     TENIR EN COMPTE QUE LES ASSIGNAUTES HAN D
-    //    'ESTAR ORDENADES PER CODI 
-    public void inserirAssignatura(Assignatura ass) {
-        this.list.inserirAssignatura(ass);
-    }
-
-    //
-    public Assignatura cercarAssignatura(int codi) {
-        Assignatura ass = list.getCap();
-        boolean trobat = false;
-        while (!trobat && ass != null) {
-            if (ass.getCodi() == codi) {
-                trobat = true;
+        String nom_as = JOptionPane.showInputDialog(new JFrame(), "Nom de l'assignatura nº" + (i + 1));
+        int codi_as = Integer.parseInt(JOptionPane.showInputDialog(new JFrame(), "Codi de l'assignatura nº" + (i + 1)));
+        String tipusAss = (String) JOptionPane.showInputDialog(new JFrame(),
+                "Tipus de l'assigantura nº" + (i + 1), "Tipus assigantura", JOptionPane.QUESTION_MESSAGE, null, possiblesAss, possiblesAss[0]);
+        if (tipusAss.equals("Obligatòria")) {
+            int credits = Integer.parseInt(JOptionPane.showInputDialog(new JFrame(), "Crèdits de l'assigantura nº" + (i + 1)));
+            assignatura = new Obligatoria(credits, nom_as, codi_as);
+        } else {
+            String perfil = (String) JOptionPane.showInputDialog(new JFrame(),
+                    "Tipus de l'assigantura nº" + (i + 1), "Tipus assigantura", JOptionPane.QUESTION_MESSAGE, null, possiblesPerfils, possiblesPerfils[0]);
+            if (perfil.equals("Teòrica")) {
+                perf = 1;
             } else {
-                ass = ass.getSeg();
+                perf = 2;
             }
+            assignatura = new Optativa(nom_as, codi_as, perf);
         }
-        return ass;
+        this.list.inserirAssignatura(assignatura, i);
+    }
+
+    public Assignatura cercarAssignatura(int codi) {
+//        Assignatura ass = list.getCap();
+//        boolean trobat = false;
+//        while (!trobat && ass != null) {
+//            if (ass.getCodi() == codi) {
+//                trobat = true;
+//            } else {
+//                ass = ass.getSeg();
+//            }
+//        }
+        return list.cercar(codi);
     }
 
     public void eliminarAssignautra(int codi) {
@@ -77,10 +93,6 @@ public class Curs {
         return list;
     }
 
-    public int getN_ass() {
-        return n_ass;
-    }
-
     public int getCodi() {
         return codi;
     }
@@ -89,4 +101,8 @@ public class Curs {
         this.seg = seg;
     }
 
+    @Override
+    public String toString() {
+        return "CURS = {nom: " + nom + " | codi: " + codi + "}";
+    }
 }

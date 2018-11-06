@@ -14,7 +14,7 @@ public class Primer extends Batxiller{
     
     @Override
     public String toString(){
-        return"Batxiller = {any: "+any+" | nom: "+nom+" | codi:"+codi+"}";
+        return "Curs = { nom: "+nom+" | codi: "+codi+" | tipus: Batxillerat | any: "+any+" }";
     }
     
 }

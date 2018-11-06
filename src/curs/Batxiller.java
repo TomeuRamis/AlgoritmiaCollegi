@@ -13,6 +13,6 @@ public class Batxiller extends Curs{
     
     @Override
     public String toString(){
-        return"Batxiller = nom: "+nom+" / codi:"+codi;
+        return"Curs = {nom: "+nom+" | codi:" + codi + " }";
     }
 }

@@ -7,9 +7,35 @@ public class Llista_estudiant_assignatura {
     ReferenciaAssignatura cap = null;
 
     public void inserirRefAssign(Assignatura ass) {
+        
         ReferenciaAssignatura rass = new ReferenciaAssignatura(ass);
-        rass.setSeg(cap);
-        cap = rass;
+        
+        if (cap == null) {
+            cap = rass;
+        } else {
+            if (cap.getRef().getCodi() > rass.getRef().getCodi()) {
+                rass.setSeg(cap);
+                cap = rass;
+            } else {
+                ReferenciaAssignatura aux1 = cap.getSeg();
+                ReferenciaAssignatura aux2 = cap;
+                if (aux1 != null) {
+                    while (aux1.getRef().getCodi() < ass.getCodi() && aux1.getSeg() != null) {
+                        aux2 = aux1;
+                        aux1 = aux1.getSeg();
+                    }
+                    if (aux1.getSeg() == null) {
+                        aux1.setSeg(rass);
+                    } else {
+                        rass.setSeg(aux1);
+                        aux2.setSeg(rass);
+                    }
+                } else {
+                    rass.setSeg(aux1);
+                    aux2.setSeg(rass);
+                }
+            }
+        }
     }
 
     public ReferenciaAssignatura cercarRefassign(int codi) {
@@ -18,10 +44,8 @@ public class Llista_estudiant_assignatura {
             while ((assign.getSeg() != null) && (assign.getRef().getCodi() != codi)) {
                 assign = assign.getSeg();
             }
-            if (assign.getRef().getCodi() == codi) {
-                System.out.print(assign.getRef().getNom() + "\n");
-            } else {
-                System.out.println("no s'ha trobat element");
+            if (assign.getRef().getCodi() != codi) {
+                return null;
             }
         }
         return assign;
@@ -51,7 +75,7 @@ public class Llista_estudiant_assignatura {
         String res = "";
         ReferenciaAssignatura refAssAux = this.cap;
         while (refAssAux != null) {
-            res += refAssAux.getRef().toString() + "\n";
+            res += refAssAux.getRef() + "\n";
             refAssAux = refAssAux.getSeg();
         }
         return res;

@@ -10,8 +10,9 @@ import assignatura.Assignatura;
  * @author tomeu
  */
 public class ReferenciaAssignatura {
-    private Assignatura ref;
-    private ReferenciaAssignatura seg;
+    
+    protected Assignatura ref;
+    protected ReferenciaAssignatura seg;
 
     public ReferenciaAssignatura(Assignatura ref) {
         this.ref = ref;
@@ -37,6 +38,9 @@ public class ReferenciaAssignatura {
         this.seg = seg;
     }
     
-    
+    @Override
+    public String toString(){
+        return ""+this.ref;
+    }
     
 }
